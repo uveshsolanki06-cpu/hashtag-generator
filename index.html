@@ -1,107 +1,551 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Viral Hashtag Generator</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-body{
-    margin:0;
-    font-family:Arial;
-    background: linear-gradient(135deg,#667eea,#764ba2);
-    text-align:center;
-    color:white;
-}
-.container{
-    margin-top:80px;
-}
-input{
-    padding:12px;
-    width:250px;
-    border-radius:25px;
-    border:none;
-}
-button{
-    padding:12px 25px;
-    border-radius:25px;
-    border:none;
-    background:white;
-    font-weight:bold;
-    cursor:pointer;
-}
-.result{
-    margin:30px auto;
-    width:80%;
-    background:white;
-    color:black;
-    padding:20px;
-    border-radius:15px;
-}
-.tag{
-    display:inline-block;
-    background:#f0f0f0;
-    padding:6px 12px;
-    margin:5px;
-    border-radius:20px;
-    font-size:14px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viral Hashtag Generator - Free</title>
+    <meta name="description" content="Generate viral hashtags instantly for free!">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+
+        .emoji-big {
+            font-size: 3em;
+        }
+
+        /* Input Section */
+        .input-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .main-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 18px 25px;
+            font-size: 1.2em;
+            border: 3px solid #e0e0e0;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .main-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.2);
+        }
+
+        .generate-btn {
+            padding: 18px 35px;
+            font-size: 1.1em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102,126,234,0.5);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Category Buttons */
+        .category-section {
+            margin-top: 25px;
+        }
+
+        .category-section h3 {
+            color: #555;
+            margin-bottom: 12px;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .category-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .cat-btn {
+            padding: 8px 18px;
+            border: 2px solid #667eea;
+            border-radius: 25px;
+            background: white;
+            color: #667eea;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+
+        .cat-btn:hover, .cat-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Platform Selection */
+        .platform-section {
+            margin-top: 20px;
+        }
+
+        .platform-section h3 {
+            color: #555;
+            margin-bottom: 12px;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .platform-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .plat-btn {
+            padding: 8px 18px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            background: white;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+
+        .plat-btn.instagram { border-color: #E1306C; color: #E1306C; }
+        .plat-btn.instagram.active { background: #E1306C; color: white; }
+        .plat-btn.tiktok { border-color: #000; color: #000; }
+        .plat-btn.tiktok.active { background: #000; color: white; }
+        .plat-btn.twitter { border-color: #1DA1F2; color: #1DA1F2; }
+        .plat-btn.twitter.active { background: #1DA1F2; color: white; }
+        .plat-btn.youtube { border-color: #FF0000; color: #FF0000; }
+        .plat-btn.youtube.active { background: #FF0000; color: white; }
+
+        /* Results Section */
+        .results-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .results-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .copy-all-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .copy-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(17,153,142,0.4);
+        }
+
+        /* Hashtag Display */
+        .hashtag-box {
+            background: #f8f9ff;
+            border: 2px solid #e8ecff;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            line-height: 2.2;
+            word-break: break-word;
+            font-size: 1em;
+            color: #4a4a4a;
+        }
+
+        .hashtag-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea20, #764ba220);
+            color: #5a4fcf;
+            border: 1px solid #667eea40;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .hashtag-tag:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        /* Stats */
+        .stats-bar {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5em;
+            font-weight: 800;
+        }
+
+        .stat-label {
+            font-size: 0.75em;
+            opacity: 0.9;
+        }
+
+        /* Categories of hashtags */
+        .hashtag-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .hashtag-category-card {
+            background: #f8f9ff;
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .hashtag-category-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+
+        /* Copy notification */
+        .copy-notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #38ef7d;
+            color: #1a1a1a;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: 700;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+
+        .copy-notification.show {
+            opacity: 1;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 30px;
+            display: none;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            padding: 30px;
+            font-size: 0.9em;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .header h1 { font-size: 2em; }
+            .input-section { padding: 25px; }
+            .main-input { font-size: 1em; }
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
-<h1>🔥 Viral Hashtag Generator</h1>
-<p>Enter one word → Get viral hashtags instantly</p>
+    
+    <!-- Header -->
+    <div class="header">
+        <div class="emoji-big">🔥</div>
+        <h1>Viral Hashtag Generator</h1>
+        <p>Enter one word → Get 100+ viral hashtags instantly FREE!</p>
+    </div>
 
-<input type="text" id="keyword" placeholder="Enter keyword">
-<button onclick="generate()">Generate</button>
+    <!-- Input Section -->
+    <div class="input-section">
+        
+        <div class="input-group">
+            <input 
+                type="text" 
+                class="main-input" 
+                id="keywordInput"
+                placeholder="Enter your keyword... (e.g: fitness, food, travel)"
+                maxlength="50"
+                autocomplete="off"
+            />
+            <button class="generate-btn" onclick="generateHashtags()">
+                🚀 Generate
+            </button>
+        </div>
 
-<div class="result" id="result"></div>
+        <!-- Categories -->
+        <div class="category-section">
+            <h3>📂 Quick Categories</h3>
+            <div class="category-buttons">
+                <button class="cat-btn" onclick="setKeyword('fitness')">💪 Fitness</button>
+                <button class="cat-btn" onclick="setKeyword('food')">🍕 Food</button>
+                <button class="cat-btn" onclick="setKeyword('travel')">✈️ Travel</button>
+                <button class="cat-btn" onclick="setKeyword('fashion')">👗 Fashion</button>
+                <button class="cat-btn" onclick="setKeyword('business')">💼 Business</button>
+                <button class="cat-btn" onclick="setKeyword('motivation')">🔥 Motivation</button>
+                <button class="cat-btn" onclick="setKeyword('beauty')">💄 Beauty</button>
+                <button class="cat-btn" onclick="setKeyword('music')">🎵 Music</button>
+                <button class="cat-btn" onclick="setKeyword('gaming')">🎮 Gaming</button>
+                <button class="cat-btn" onclick="setKeyword('photography')">📸 Photography</button>
+                <button class="cat-btn" onclick="setKeyword('nature')">🌿 Nature</button>
+                <button class="cat-btn" onclick="setKeyword('love')">❤️ Love</button>
+            </div>
+        </div>
+
+        <!-- Platform -->
+        <div class="platform-section">
+            <h3>📱 Select Platform</h3>
+            <div class="platform-buttons">
+                <button class="plat-btn instagram active" id="plat-instagram" onclick="selectPlatform('instagram')">📸 Instagram</button>
+                <button class="plat-btn tiktok" id="plat-tiktok" onclick="selectPlatform('tiktok')">🎵 TikTok</button>
+                <button class="plat-btn twitter" id="plat-twitter" onclick="selectPlatform('twitter')">🐦 Twitter</button>
+                <button class="plat-btn youtube" id="plat-youtube" onclick="selectPlatform('youtube')">▶️ YouTube</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Loading -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p style="color:white; font-size:1.1em;">Generating viral hashtags...</p>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section" id="resultsSection">
+        
+        <div class="results-header">
+            <div class="results-title" id="resultsTitle">🔥 Hashtags for #keyword</div>
+            <div class="results-actions">
+                <button class="copy-all-btn" onclick="copyAll()">📋 Copy All</button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-number" id="totalCount">0</div>
+                <div class="stat-label">Hashtags</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="viralCount">0</div>
+                <div class="stat-label">Viral Tags</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="platformName">Instagram</div>
+                <div class="stat-label">Platform</div>
+            </div>
+        </div>
+
+        <!-- Main Hashtag Box -->
+        <div class="hashtag-box" id="mainHashtagBox"></div>
+
+        <!-- Categorized -->
+        <div class="hashtag-categories" id="categorizedHashtags"></div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>🔥 Viral Hashtag Generator | 100% Free | No Sign-up Required</p>
+        <p style="margin-top:5px;">Click any hashtag to copy it individually</p>
+    </div>
+
 </div>
 
+<!-- Copy Notification -->
+<div class="copy-notification" id="copyNotif">✅ Copied to clipboard!</div>
+
 <script>
+// ============================================
+// HASHTAG DATABASE
+// ============================================
 
-const commonTags = [
-"#viral","#trending","#explore","#fyp","#instagood",
-"#photooftheday","#love","#instadaily","#reels",
-"#follow","#like","#fashion","#fitness","#travel",
-"#food","#motivation","#business","#success","#life"
-];
+const hashtagDatabase = {
+    
+    // GENERAL VIRAL HASHTAGS
+    viral_always: [
+        '#viral', '#trending', '#fyp', '#foryou', '#foryoupage', 
+        '#explore', '#reels', '#reelsinstagram', '#explorepage',
+        '#viralpost', '#trendingnow', '#viralvideo', '#trendingpost'
+    ],
 
-function generate(){
-    let word = document.getElementById("keyword").value.toLowerCase();
-    let resultBox = document.getElementById("result");
+    // NICHE SPECIFIC HASHTAGS
+    fitness: {
+        mega: ['#fitness', '#workout', '#gym', '#fit', '#health'],
+        large: ['#fitnessmotivation', '#bodybuilding', '#healthylifestyle', '#exercise', '#training', '#cardio', '#weightloss', '#muscle', '#gymlife', '#fitlife'],
+        medium: ['#fitnessinspiration', '#workoutroutine', '#gymmotivation', '#fitfam', '#healthyliving', '#personaltrainer', '#abs', '#gains', '#strengthtraining', '#crossfit'],
+        small: ['#fitnesstransformation', '#workoutmotivation', '#fitnessjourney', '#homeworkout', '#yogalife', '#pilates', '#running', '#marathon', '#athlete', '#sportsmotivation'],
+        niche: ['#chestworkout', '#legday', '#armday', '#backworkout', '#shoulderworkout', '#coreworkout', '#hiit', '#functionalfitness', '#kettlebell', '#resistance']
+    },
 
-    if(word === ""){
-        alert("Please enter a keyword");
-        return;
-    }
+    food: {
+        mega: ['#food', '#foodie', '#yummy', '#delicious', '#eat'],
+        large: ['#foodporn', '#foodphotography', '#instafood', '#foodlover', '#cooking', '#recipe', '#homemade', '#tasty', '#foodblogger', '#chef'],
+        medium: ['#foodstagram', '#foodofinstagram', '#healthyfood', '#dinnertime', '#lunchtime', '#breakfast', '#snack', '#dessert', '#restaurant', '#streetfood'],
+        small: ['#foodielife', '#homecooking', '#mealprep', '#veganfood', '#vegetarian', '#glutenfree', '#organic', '#cleaneating', '#foodtrends', '#foodreview'],
+        niche: ['#pasta', '#pizza', '#sushi', '#burger', '#salad', '#smoothie', '#cake', '#coffee', '#bakery', '#fooddelivery']
+    },
 
-    let tags = [];
+    travel: {
+        mega: ['#travel', '#wanderlust', '#adventure', '#explore', '#vacation'],
+        large: ['#travelphotography', '#travelgram', '#travelling', '#travellife', '#travelblogger', '#worldtravel', '#tourism', '#holiday', '#trip', '#backpacking'],
+        medium: ['#travelinspiration', '#traveltips', '#solotravel', '#travelcouple', '#budgettravel', '#luxurytravel', '#roadtrip', '#traveladdict', '#traveler', '#nomad'],
+        small: ['#digitalnomad', '#workandtravel', '#traveltheworld', '#globetrotter', '#traveldiaries', '#travelphoto', '#travelmore', '#travelgoals', '#bucketlist', '#hikelife'],
+        niche: ['#beachlife', '#mountains', '#citybreak', '#camping', '#islandlife', '#europetravel', '#asiatravel', '#americatravel', '#backpacker', '#travelblog']
+    },
 
-    // Main keyword tags
-    tags.push("#"+word);
-    tags.push("#"+word+"life");
-    tags.push("#"+word+"lover");
-    tags.push("#"+word+"daily");
-    tags.push("#"+word+"vibes");
-    tags.push("#"+word+"goals");
-    tags.push("#best"+word);
-    tags.push("#top"+word);
+    fashion: {
+        mega: ['#fashion', '#style', '#ootd', '#outfit', '#clothes'],
+        large: ['#fashionblogger', '#fashionista', '#streetstyle', '#fashionstyle', '#styleblogger', '#lookoftheday', '#outfitoftheday', '#fashionista', '#instafashion', '#stylish'],
+        medium: ['#fashionweek', '#fashiondesigner', '#luxuryfashion', '#vintageStyle', '#minimalist', '#aesthetic', '#streetwear', '#casualstyle', '#fashionforward', '#trendy'],
+        small: ['#womensfashion', '#mensfashion', '#kidsfashion', '#sustainablefashion', '#slowfashion', '#capsulewardrobe', '#fashionblog', '#clothingbrand', '#styletips', '#fashionlife'],
+        niche: ['#shoes', '#handbag', '#accessories', '#jewelry', '#sunglasses', '#sneakers', '#denim', '#dress', '#suit', '#skirt']
+    },
 
-    // Add common viral tags
-    tags = tags.concat(commonTags);
+    business: {
+        mega: ['#business', '#entrepreneur', '#success', '#money', '#hustle'],
+        large: ['#entrepreneurship', '#startup', '#marketing', '#digitalmarketing', '#smallbusiness', '#businessowner', '#motivation', '#mindset', '#leadership', '#growth'],
+        medium: ['#businesstips', '#onlinebusiness', '#passiveincome', '#investing', '#finance', '#sidehustle', '#freelancer', '#workfromhome', '#productivity', '#goalsetting'],
+        small: ['#businesscoach', '#salesfunnel', '#socialmediamarketing', '#contentcreator', '#branding', '#networkmarketing', '#ecommerce', '#dropshipping', '#coaching', '#consulting'],
+        niche: ['#businessmindset', '#financialfreedom', '#wealthbuilding', '#stockmarket', '#crypto', '#nft', '#saas', '#agencylife', '#b2b', '#businessgrowth']
+    },
 
-    // Remove duplicates
-    tags = [...new Set(tags)];
+    motivation: {
+        mega: ['#motivation', '#inspiration', '#success', '#goals', '#mindset'],
+        large: ['#motivationalquotes', '#inspirationalquotes', '#positivity', '#selflove', '#selfimprovement', '#growthmindset', '#hustle', '#grind', '#nevergiveup', '#believe'],
+        medium: ['#dailymotivation', '#morningmotivation', '#successmindset', '#personaldevelopment', '#lifequotes', '#quotes', '#quoteoftheday', '#positivevibes', '#goodvibes', '#blessed'],
+        small: ['#affirmations', '#manifestation', '#lawofattraction', '#meditation', '#mindfulness', '#gratitude', '#selfdiscipline', '#confidence', '#fearless', '#dreambig'],
+        niche: ['#mondaymotivation', '#tuesdaymotivation', '#wednesdaymotivation', '#thursdaymotivation', '#fridaymotivation', '#weekendmotivation', '#morningroutine', '#nightroutine', '#habits', '#discipline']
+    },
 
-    // Display
-    resultBox.innerHTML = "";
-    tags.forEach(tag=>{
-        resultBox.innerHTML += `<span class="tag">${tag}</span>`;
-    });
-}
+    beauty: {
+        mega: ['#beauty', '#makeup', '#skincare', '#beautiful', '#glam'],
+        large: ['#beautyblogger', '#makeuptutorial', '#makeuplook', '#makeupoftheday', '#skincareroutine', '#beautytips', '#glowup', '#naturalbeauty', '#makeupbyme', '#beautyig'],
+        medium: ['#mua', '#makeupartist', '#beautycommunity', '#crueltyfree', '#veganbeauty', '#cleanbeauty', '#antiaging', '#acne', '#hyperpigmentation', '#glowingskin'],
+        small: ['#foundation', '#lipstick', '#eyeshadow', '#mascara', '#concealer', '#blush', '#contour', '#highlight', '#bronzer', '#primer'],
+        niche: ['#koreanskincare', '#skincareobsessed', '#beautyproducts', '#beautyreview', '#drugstorebeauty', '#luxurybeauty', '#nailart', '#haircare', '#hairstyle', '#hairtransformation']
+    },
 
-</script>
-
-</body>
-</html>
+    music: {
+        mega: ['#music', '#song', '#singer', '#musician', '#artist'],
+        large: ['#musicvideo', '#newmusic', '#musicproducer', '#hiphop', '#pop', '#rnb', '#rap', '#indie', '#rock', '#electronic'],
+        medium: ['#musiclover', '#musiclife', '#playlist', '#lyrics', '#guitar', '#piano', '#drums', '#bass', '#studio', '#recording'],
