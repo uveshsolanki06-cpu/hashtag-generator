@@ -10,6 +10,10 @@
 <meta name="author" content="Viral Hashtag Generator">
 <meta name="robots" content="index, follow">
 
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+crossorigin="anonymous"></script>
+
 <style>
 :root{
 --bg:#0f2027;
@@ -18,7 +22,6 @@
 --tagbg:white;
 --tagtext:#333;
 }
-
 .light{
 --bg:#f4f6f9;
 --card:white;
@@ -26,7 +29,6 @@
 --tagbg:#222;
 --tagtext:white;
 }
-
 body{
 margin:0;
 font-family:'Segoe UI',sans-serif;
@@ -36,36 +38,12 @@ text-align:center;
 transition:0.3s;
 overflow-x:hidden;
 }
-
-/* Animated gradient background */
-body::before{
-content:"";
-position:fixed;
-top:0;
-left:0;
-width:200%;
-height:200%;
-background:linear-gradient(45deg,#ff9966,#ff5e62,#00c6ff,#0072ff);
-background-size:400% 400%;
-animation:move 12s ease infinite;
-z-index:-1;
-opacity:0.15;
-}
-
-@keyframes move{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
-}
-
 .container{
 padding:60px 20px;
 max-width:1100px;
 margin:auto;
 }
-
 h1{font-size:36px;margin-bottom:10px;}
-
 .controls{
 display:flex;
 flex-wrap:wrap;
@@ -73,7 +51,6 @@ justify-content:center;
 gap:10px;
 margin-bottom:20px;
 }
-
 input,select{
 padding:12px 18px;
 border-radius:30px;
@@ -81,7 +58,6 @@ border:none;
 outline:none;
 font-size:14px;
 }
-
 button{
 padding:12px 20px;
 border-radius:30px;
@@ -90,15 +66,12 @@ cursor:pointer;
 font-weight:bold;
 transition:0.3s;
 }
-
 .generate{background:#ff5e62;color:white;}
 .copy{background:#0072ff;color:white;}
 .download{background:#3bb2b8;color:white;}
 .toggle{background:#6366f1;color:white;}
 .save{background:#42e695;color:black;}
-
 button:hover{transform:scale(1.05);}
-
 .result{
 margin-top:30px;
 background:var(--card);
@@ -106,7 +79,6 @@ padding:25px;
 border-radius:20px;
 min-height:150px;
 }
-
 .tag{
 display:inline-block;
 background:var(--tagbg);
@@ -117,12 +89,9 @@ border-radius:25px;
 cursor:pointer;
 transition:0.2s;
 }
-
 .tag:hover{transform:scale(1.1);}
-
 .count{margin-top:10px;font-weight:bold;}
 .trend{margin-top:5px;font-size:16px;}
-
 .saved{
 margin-top:25px;
 padding:15px;
@@ -133,6 +102,19 @@ border-radius:15px;
 </head>
 
 <body>
+
+<!-- TOP AD -->
+<div style="margin:20px auto;text-align:center;">
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+data-ad-slot="1111111111"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
 
 <div class="container">
 
@@ -161,11 +143,19 @@ border-radius:15px;
 <div class="trend" id="trend"></div>
 </div>
 
-<div class="saved">
-<h3>Saved Hashtag Set</h3>
-<div id="savedList"></div>
 </div>
 
+<!-- BOTTOM AD -->
+<div style="margin:30px auto;text-align:center;">
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+data-ad-slot="2222222222"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 </div>
 
 <script>
@@ -183,38 +173,26 @@ youtube:["youtubeshorts","subscribe","youtuber"],
 twitter:["tweet","retweet","twittertrend"]
 };
 
-function randomize(arr){
-return arr.sort(()=>0.5-Math.random());
-}
+function randomize(arr){ return arr.sort(()=>0.5-Math.random()); }
 
 function generate(){
-
 let word=document.getElementById("keyword").value.toLowerCase();
 let platform=document.getElementById("platform").value;
-
 if(word===""){alert("Enter keyword");return;}
-
 let tags=[];
 tags.push(word,word+"life","best"+word,word+"vibes",
 word+"official",word+"community",word+"world");
-
 tags=tags.concat(baseTags,platformTags[platform]);
-
 tags=[...new Set(tags)];
 tags=randomize(tags).slice(0,40);
-
 let box=document.getElementById("result");
 box.innerHTML="";
-
 tags.forEach(t=>{
 box.innerHTML+=`<span class="tag" onclick="copyTag(this)">#${t}</span>`;
 });
-
 document.getElementById("count").innerText="Total Hashtags: "+tags.length;
-
 let score=Math.floor(Math.random()*40)+60;
 document.getElementById("trend").innerText="🔥 Trending Score: "+score+"%";
-
 }
 
 function copyAll(){
@@ -242,26 +220,15 @@ link.download="hashtags.txt";
 link.click();
 }
 
-function toggleMode(){
-document.body.classList.toggle("light");
-}
+function toggleMode(){ document.body.classList.toggle("light"); }
 
 function saveSet(){
 let tags=document.querySelectorAll(".tag");
 let text="";
 tags.forEach(tag=>{text+=tag.innerText+" ";});
 localStorage.setItem("savedTags",text);
-loadSaved();
+alert("Saved!");
 }
-
-function loadSaved(){
-let saved=localStorage.getItem("savedTags");
-if(saved){
-document.getElementById("savedList").innerText=saved;
-}
-}
-
-loadSaved();
 
 </script>
 
