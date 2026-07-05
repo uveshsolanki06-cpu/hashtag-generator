@@ -7,15 +7,15 @@
 <style>
 body{
 margin:0;
-font-family: 'Segoe UI', sans-serif;
-background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
 color:white;
 text-align:center;
 }
 
 .container{
 padding:60px 20px;
-max-width:900px;
+max-width:1000px;
 margin:auto;
 }
 
@@ -62,20 +62,38 @@ transform:scale(1.05);
 .result{
 margin-top:40px;
 background:rgba(255,255,255,0.1);
-backdrop-filter: blur(10px);
+backdrop-filter: blur(15px);
 padding:25px;
 border-radius:20px;
-min-height:120px;
+min-height:150px;
 }
 
 .tag{
 display:inline-block;
 background:white;
 color:#333;
-padding:6px 12px;
-margin:5px;
-border-radius:20px;
+padding:8px 14px;
+margin:6px;
+border-radius:25px;
 font-size:14px;
+cursor:pointer;
+transition:0.2s;
+}
+
+.tag:hover{
+background:#ff9966;
+color:white;
+}
+
+.copy-btn{
+background:linear-gradient(135deg,#00c6ff,#0072ff);
+margin-bottom:15px;
+}
+
+#copyMsg{
+margin-left:10px;
+color:#00ffcc;
+font-weight:bold;
 }
 </style>
 </head>
@@ -85,7 +103,7 @@ font-size:14px;
 <div class="container">
 
 <h1>🔥 Viral Hashtag Generator PRO</h1>
-<p class="subtitle">Premium smart hashtag generator for all countries</p>
+<p class="subtitle">Smart premium hashtag tool for all countries & languages</p>
 
 <div class="input-box">
 <input type="text" id="keyword" placeholder="Enter keyword">
@@ -110,17 +128,25 @@ font-size:14px;
 <button onclick="generate()">Generate</button>
 </div>
 
-<div class="result" id="result"></div>
+<div class="result">
+<div>
+<button class="copy-btn" onclick="copyAll()">📋 Copy All Hashtags</button>
+<span id="copyMsg"></span>
+</div>
+<div id="result"></div>
+</div>
 
 </div>
 
 <script>
 
 const viralBase = [
-"viral","trending","explore","fyp","reels",
+"viral","trending","explorepage","fyp","reels",
 "instagood","photooftheday","love","instadaily",
-"likeforlikes","followforfollow","success","motivation",
-"business","lifestyle","fashion","fitness","travel","food"
+"likeforlikes","followforfollow","success",
+"motivation","business","lifestyle","fashion",
+"fitness","travel","food","entrepreneur",
+"socialmedia","digitalmarketing","contentcreator"
 ];
 
 const countryTags = {
@@ -160,24 +186,55 @@ let tags = [];
 
 tags.push(word);
 tags.push(word+"life");
-tags.push("best"+word);
-tags.push(word+"vibes");
 tags.push(word+"lover");
+tags.push(word+"vibes");
+tags.push("best"+word);
+tags.push("top"+word);
+tags.push(word+"goals");
+tags.push(word+"official");
 
 tags = tags.concat(viralBase);
 tags = tags.concat(countryTags[country]);
 tags = tags.concat(languageTags[language]);
 
+tags = [...new Set(tags)];
 tags = randomize(tags);
-
-tags = tags.slice(0,30);
+tags = tags.slice(0,35);
 
 resultBox.innerHTML="";
 
 tags.forEach(t=>{
-resultBox.innerHTML += `<span class="tag">#${t}</span>`;
+resultBox.innerHTML += `<span class="tag" onclick="copyTag(this)">#${t}</span>`;
 });
 
+}
+
+function copyAll(){
+
+let tags = document.querySelectorAll(".tag");
+let text="";
+
+tags.forEach(tag=>{
+text += tag.innerText + " ";
+});
+
+navigator.clipboard.writeText(text).then(()=>{
+document.getElementById("copyMsg").innerText="✅ Copied!";
+setTimeout(()=>{
+document.getElementById("copyMsg").innerText="";
+},2000);
+});
+
+}
+
+function copyTag(element){
+navigator.clipboard.writeText(element.innerText);
+element.style.background="#00ffcc";
+element.style.color="black";
+setTimeout(()=>{
+element.style.background="white";
+element.style.color="#333";
+},500);
 }
 
 </script>
