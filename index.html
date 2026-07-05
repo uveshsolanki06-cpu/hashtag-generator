@@ -1,39 +1,106 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Hashtag Generator</title>
+<title>Viral Hashtag Generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body {font-family: Arial; text-align:center; padding:40px; background:#f2f2f2;}
-input {padding:10px; width:250px;}
-button {padding:10px 20px; cursor:pointer;}
-#result {margin-top:20px; font-weight:bold;}
+body{
+    margin:0;
+    font-family:Arial;
+    background: linear-gradient(135deg,#667eea,#764ba2);
+    text-align:center;
+    color:white;
+}
+.container{
+    margin-top:80px;
+}
+input{
+    padding:12px;
+    width:250px;
+    border-radius:25px;
+    border:none;
+}
+button{
+    padding:12px 25px;
+    border-radius:25px;
+    border:none;
+    background:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+.result{
+    margin:30px auto;
+    width:80%;
+    background:white;
+    color:black;
+    padding:20px;
+    border-radius:15px;
+}
+.tag{
+    display:inline-block;
+    background:#f0f0f0;
+    padding:6px 12px;
+    margin:5px;
+    border-radius:20px;
+    font-size:14px;
+}
 </style>
 </head>
 <body>
 
+<div class="container">
 <h1>🔥 Viral Hashtag Generator</h1>
+<p>Enter one word → Get viral hashtags instantly</p>
 
 <input type="text" id="keyword" placeholder="Enter keyword">
 <button onclick="generate()">Generate</button>
 
-<div id="result"></div>
+<div class="result" id="result"></div>
+</div>
 
 <script>
-function generate() {
-    var word = document.getElementById("keyword").value;
-    
-    if(word == "") {
-        alert("Please enter a word");
+
+const commonTags = [
+"#viral","#trending","#explore","#fyp","#instagood",
+"#photooftheday","#love","#instadaily","#reels",
+"#follow","#like","#fashion","#fitness","#travel",
+"#food","#motivation","#business","#success","#life"
+];
+
+function generate(){
+    let word = document.getElementById("keyword").value.toLowerCase();
+    let resultBox = document.getElementById("result");
+
+    if(word === ""){
+        alert("Please enter a keyword");
         return;
     }
 
-    var hashtags = "";
-    for(var i=1; i<=20; i++){
-        hashtags += "#" + word + i + " ";
-    }
+    let tags = [];
 
-    document.getElementById("result").innerText = hashtags;
+    // Main keyword tags
+    tags.push("#"+word);
+    tags.push("#"+word+"life");
+    tags.push("#"+word+"lover");
+    tags.push("#"+word+"daily");
+    tags.push("#"+word+"vibes");
+    tags.push("#"+word+"goals");
+    tags.push("#best"+word);
+    tags.push("#top"+word);
+
+    // Add common viral tags
+    tags = tags.concat(commonTags);
+
+    // Remove duplicates
+    tags = [...new Set(tags)];
+
+    // Display
+    resultBox.innerHTML = "";
+    tags.forEach(tag=>{
+        resultBox.innerHTML += `<span class="tag">${tag}</span>`;
+    });
 }
+
 </script>
 
 </body>
