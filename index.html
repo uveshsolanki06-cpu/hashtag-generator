@@ -1,44 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Viral Hashtag Generator</title>
+
+<meta name="description" content="Free Advanced Viral Hashtag Generator for Instagram, TikTok, YouTube & Twitter.">
+
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+color:white;
+text-align:center;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:60px 20px;
+}
+
+h1{
+font-size:38px;
+margin-bottom:10px;
+}
+
+input{
+padding:12px 20px;
+border-radius:30px;
+border:none;
+outline:none;
+width:250px;
+}
+
+button{
+padding:12px 20px;
+border-radius:30px;
+border:none;
+cursor:pointer;
+font-weight:bold;
+margin:5px;
+}
+
+.generate{background:#ff5e62;color:white;}
+.copy{background:#0072ff;color:white;}
+
+.result{
+margin-top:30px;
+background:rgba(255,255,255,0.1);
+padding:25px;
+border-radius:20px;
+min-height:150px;
+}
+
+.tag{
+display:inline-block;
+background:white;
+color:#333;
+padding:8px 14px;
+margin:6px;
+border-radius:25px;
+cursor:pointer;
+transition:0.2s;
+}
+
+.tag:hover{
+transform:scale(1.1);
+background:#ff5e62;
+color:white;
+}
+
+.count{
+margin-top:10px;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🔥 Advanced Viral Hashtag Generator</h1>
+<p>Smart multi-category trending hashtag tool</p>
+
+<input type="text" id="keyword" placeholder="Enter keyword">
+<br>
+<button class="generate" onclick="generate()">Generate</button>
+<button class="copy" onclick="copyAll()">Copy All</button>
+
+<div class="result">
+<div id="result"></div>
+<div class="count" id="count"></div>
+</div>
+
+</div>
+
 <script>
 
-// ===== HASHTAG DATABASE =====
+// ===== CATEGORY DATABASE =====
 
 const hashtagDB = {
 
-fitness: [
+fitness:[
 "fitness","workout","gym","fitlife","fitnessmotivation","bodybuilding",
 "gymlife","exercise","healthylifestyle","cardio","strengthtraining",
 "weightloss","fitfam","fitnessjourney","personaltrainer","homeworkout",
 "muscle","training","abs","gains","athlete","crossfit","wellness"
 ],
 
-food: [
+food:[
 "food","foodie","instafood","foodporn","delicious","yummy",
 "foodlover","homemade","tasty","recipe","chef","healthyfood",
 "dinner","lunch","breakfast","dessert","snack","cooking",
 "streetfood","veganfood","organicfood"
 ],
 
-travel: [
+travel:[
 "travel","wanderlust","travelgram","vacation","adventure",
 "explore","tourism","trip","travelling","travelblogger",
 "backpacking","roadtrip","naturetravel","holiday",
 "travelphotography","luxurytravel","worldtravel"
 ],
 
-business: [
+business:[
 "business","entrepreneur","startup","success","hustle",
 "marketing","digitalmarketing","onlinebusiness","money",
 "leadership","motivation","growth","branding","finance",
 "mindset","smallbusiness","investing","wealth"
 ],
 
-tech: [
+tech:[
 "tech","technology","innovation","startuptech","coding",
 "programming","ai","software","developer","appdevelopment",
 "gadgets","cybersecurity","webdesign","digital","blockchain"
 ],
 
-fashion: [
+fashion:[
 "fashion","style","ootd","fashionblogger","streetstyle",
 "trendy","outfit","lookoftheday","fashionista",
 "luxuryfashion","clothing","stylish"
@@ -46,7 +146,7 @@ fashion: [
 
 };
 
-const generalTags = [
+const generalTags=[
 "viral","trending","explore","fyp","instagood",
 "photooftheday","love","instadaily","reels",
 "success","motivation","lifestyle","contentcreator",
@@ -57,35 +157,33 @@ const generalTags = [
 
 function detectCategory(word){
 word = word.toLowerCase();
-
 for(let category in hashtagDB){
-if(category.includes(word) || word.includes(category)){
+if(word.includes(category) || category.includes(word)){
 return category;
 }
 }
-
 return null;
 }
 
-function randomPick(arr, count){
-let shuffled = arr.sort(()=>0.5 - Math.random());
-return shuffled.slice(0, count);
+function randomPick(arr,count){
+let shuffled=[...arr].sort(()=>0.5-Math.random());
+return shuffled.slice(0,count);
 }
 
-// ===== MAIN GENERATOR =====
+// ===== GENERATOR =====
 
 function generate(){
 
-let word = document.getElementById("keyword").value.toLowerCase();
-if(word===""){ alert("Enter keyword"); return; }
+let word=document.getElementById("keyword").value.toLowerCase();
+if(word===""){alert("Enter keyword");return;}
 
-let resultBox = document.getElementById("result");
+let resultBox=document.getElementById("result");
 resultBox.innerHTML="";
 
-let tags = [];
+let tags=[];
 
 // Keyword variations
-let variations = [
+let variations=[
 word,
 word+"life",
 word+"lover",
@@ -98,32 +196,51 @@ word+"world",
 word+"trend"
 ];
 
-tags = tags.concat(variations);
+tags=tags.concat(variations);
 
 // Category detection
-let category = detectCategory(word);
+let category=detectCategory(word);
 
 if(category && hashtagDB[category]){
-tags = tags.concat(randomPick(hashtagDB[category], 10));
+tags=tags.concat(randomPick(hashtagDB[category],12));
 }
 
-// Add general viral mix
-tags = tags.concat(randomPick(generalTags, 10));
+// Add viral mix
+tags=tags.concat(randomPick(generalTags,10));
 
 // Remove duplicates
-tags = [...new Set(tags)];
+tags=[...new Set(tags)];
 
-// Final random shuffle
-tags = randomPick(tags, 35);
+// Final shuffle
+tags=randomPick(tags,35);
 
 // Display
 tags.forEach(t=>{
-resultBox.innerHTML += `<span class="tag">#${t}</span>`;
+resultBox.innerHTML+=`<span class="tag" onclick="copyTag(this)">#${t}</span>`;
 });
 
-document.getElementById("count").innerText =
-"Total Hashtags: " + tags.length;
+document.getElementById("count").innerText=
+"Total Hashtags: "+tags.length;
 
 }
 
+// ===== COPY FUNCTIONS =====
+
+function copyAll(){
+let tags=document.querySelectorAll(".tag");
+let text="";
+tags.forEach(tag=>{text+=tag.innerText+" ";});
+navigator.clipboard.writeText(text);
+alert("Copied All Hashtags!");
+}
+
+function copyTag(el){
+navigator.clipboard.writeText(el.innerText);
+el.style.opacity="0.5";
+setTimeout(()=>{el.style.opacity="1";},300);
+}
+
 </script>
+
+</body>
+</html>
